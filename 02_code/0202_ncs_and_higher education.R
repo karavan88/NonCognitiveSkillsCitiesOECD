@@ -10,7 +10,6 @@ source(file.path(rcodes, "0200_packages.R"))
 
 int_std <- read_dta(file.path(ssesData, "INT_01_ST_(2021.04.14)_Public.dta"))
 
-
 student_moscow_tertiary =
   int_std %>%
   filter(SiteID == "07") %>%
@@ -79,12 +78,15 @@ descriptive_bfi =
 ##### data for modeling
 model_data_hei =
   student_moscow_tertiary  %>%
-  select(starts_with("BFI"), SchID, SiteID,  Sex, SES_Group,  IMMBACK, SES_Quintile,
+  select(starts_with("BFI"), SchID, SiteID,  Sex, SES_Group,  SES_Quintile,
          Grades_Top25, Grades_Bottom25, Grades_Avg1, Expect_HEI,
          #Read_Top25, Math_Top25, Read_Bottom25, Math_Bottom25, 
          WT2019) %>%
-  mutate(SES_Group = relevel(factor(SES_Group), ref = "Top 10%"),
-         City = "Moscow")
+  mutate(SES_Group = relevel(factor(SES_Quintile), ref = "5"),
+         City = "Moscow") %>%
+  drop_na()
+
+#dim(model_data_hei)
 
 #sample characteristics
 sex_hei = table(model_data_hei$City, model_data_hei$Sex) %>% as.data.frame() %>% spread(Var2, Freq) %>% rename(City = Var1)
@@ -181,15 +183,68 @@ ggplot(long_data, aes(x = as.factor(Expect_HEI), y = Value, fill = as.factor(Exp
 
 #### MLM ####
 
+#### calculate a model without NCS
+mlm_hei = lmer(Expect_HEI ~ Sex + SES_Quintile + Grades_Top25 +
+                 (1|SchID),  REML = F,control = lmerControl(optimizer ="Nelder_Mead"),
+                    data = model_data_hei)
+
 
 ####calculate a baseline model
 mlm_hei_base = lmer(Expect_HEI ~ Sex + SES_Quintile + Grades_Top25 +
                           BFI_Open_Mindedness + BFI_Task_Performance + BFI_Engaging_with_Others +
                           BFI_Collaboration + BFI_Emotional_Regulation +
                           (1|SchID),  REML = F,control = lmerControl(optimizer ="Nelder_Mead"),
-                        data = student_moscow_tertiary)
+                        data = model_data_hei)
 
 summary(mlm_hei_base)
+
+
+##### compare two models
+
+# Extract the regression coefficients of SES_Group random slopes by City from each model
+Model1_FE_hei = unique(coef(mlm_hei)$SchID["SES_Quintile5"]) %>% as.data.frame() %>% 
+  mutate(rowname = "Average Fixed Effect", Model = "Model without NCS")
+
+Model2_FE_hei = unique(coef(mlm_hei_base)$SchID["SES_Quintile5"]) %>% as.data.frame() %>% 
+  mutate(rowname = "Average Fixed Effect", Model = "Model with NCS")
+
+
+model_comparison <- anova(mlm_hei, mlm_hei_base)
+print(model_comparison)
+
+anova_df <- as.data.frame(model_comparison)
+
+gt_table <- anova_df %>%
+  gt() %>%
+  tab_header(
+    title = "ANOVA Model Comparison"
+  )
+
+gt_table
+gtsave(gt_table, "anova_table.html")
+
+
+
+coef_df_hei = 
+  Model1_FE_hei %>%
+  bind_rows(Model2_FE_hei)
+
+rownames(coef_df_hei) <- NULL
+
+# Plot the coefficients as a geom_point plot
+ggplot(coef_df_hei, aes(x = `SES_Quintile5`, y = fct_reorder(rowname, desc(rowname) ))) +
+  geom_point(aes(color = Model), size = 7.5) +
+  geom_text(aes(label = round(`SES_Quintile5`,3)*100), size = 3)+
+  scale_color_manual(values = c( "lightblue", "#FF9999"))+
+  scale_x_continuous(limits = c(0.2, 0.40), labels = scales::percent_format())+
+  labs(x = "Effect of Top 10% by SES on Probability of\n Plans to Pursue Tertiary Degree", y = "") +
+  theme_bw()+
+  theme(legend.position = "bottom",
+        legend.background = element_rect(size=0.5, linetype="solid", 
+                                         colour ="black"))
+
+
+### Visualize a baseline model with NCS
 
 # Extract information from the model summary
 model_summary <- summary(mlm_hei_base)

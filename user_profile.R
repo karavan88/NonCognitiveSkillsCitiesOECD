@@ -33,3 +33,8 @@ inputData <-    file.path(projectFolder, "01_input_data")
 ssesData  <-    file.path(inputData, "oecd_sses_2021") 
 rcodes    <-    file.path(projectFolder, "02_code")
 
+stopifnot(dir.exists(projectFolder))
+stopifnot(dir.exists(ssesData))
+stopifnot(dir.exists(projectFolder))
+
+
