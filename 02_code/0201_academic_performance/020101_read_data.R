@@ -63,3 +63,14 @@ model_data =
          Grades_Top25, Grades_Bottom25, WT2019) %>%
   mutate(SES_Group = relevel(factor(SES_Group), ref = "Top 10%")) %>%
   drop_na()
+
+model_data =
+  students %>%
+  select(SchID, SiteID, Cohort, 
+         starts_with("BFI"),  Sex, SES_Group, 
+         City, IMMBACK,
+         Read_Top25, Math_Top25, 
+         Read_Bottom25, Math_Bottom25, 
+         Grades_Top25, Grades_Bottom25, WT2019) %>%
+  mutate(SES_Group = relevel(factor(SES_Group), ref = "Top 10%")) %>%
+  drop_na()
