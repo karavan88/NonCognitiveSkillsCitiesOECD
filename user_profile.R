@@ -29,12 +29,14 @@ if (USER == "karavan88"){
 stopifnot(dir.exists(projectFolder))
 
 # set up key folders
-inputData <-    file.path(projectFolder, "01_input_data")
-ssesData  <-    file.path(inputData, "oecd_sses_2021") 
-rcodes    <-    file.path(projectFolder, "02_code")
+inputData  <-    file.path(projectFolder, "01_input_data")
+ssesData   <-    file.path(inputData, "oecd_sses_2021") 
+rcodes     <-    file.path(projectFolder, "02_code")
+acadPerf   <-    file.path(rcodes, "0201_academic_performance")
+gradSchool <-    file.path(rcodes, "0202_graduate_school")
 
 stopifnot(dir.exists(projectFolder))
 stopifnot(dir.exists(ssesData))
-stopifnot(dir.exists(projectFolder))
+stopifnot(dir.exists(rcodes))
 
 

@@ -7,18 +7,25 @@
 
 # List of required packages
 
-required_packages_2pagers <- c("tidyverse",
-                               "haven",
-                               "lme4",
-                               "lmerTest",
-                               "lmtest",
-                               "sjPlot",
-                               "srvyr",
-                               "psych",
-                               "corrplot",
-                               "RColorBrewer",
-                               "here",
-                               "skimr")
+required_packages <- c("tidyverse",
+                       "haven",
+                       "lme4",
+                       "lmerTest",
+                       "lmtest",
+                       "sjPlot",
+                       "srvyr",
+                       "psych",
+                       "corrplot",
+                       "RColorBrewer",
+                       "here",
+                       "knitr",
+                       "glue",
+                       "gtsummary",
+                       "gt",
+                       "kableExtra",
+                       "broom.mixed",
+                       "ggeffects",
+                       "skimr")
 
 
 # Function to check and install packages
@@ -33,4 +40,4 @@ check_and_install_packages <- function(packages) {
 
 
 # Call the function with the list of required packages
-check_and_install_packages(required_packages_2pagers)
+check_and_install_packages(required_packages)
