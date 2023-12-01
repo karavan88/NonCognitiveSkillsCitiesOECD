@@ -1,0 +1,12 @@
+name: ncs_and_academic_performance
+title: NCS and Academic Performance
+username: karavan88
+account: karavan88
+server: posit.cloud
+hostUrl: https://api.posit.cloud/v1
+appId: 7083962
+bundleId: 7940289
+url: https://posit.cloud/content/7083962
+version: 1
+asMultiple: FALSE
+asStatic: TRUE
