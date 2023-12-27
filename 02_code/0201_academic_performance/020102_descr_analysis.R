@@ -49,22 +49,22 @@ equity <-
   as_survey(weight = WT2019) %>%
   summarise(
     HP = survey_mean(Grades_Top25),
-    LP = survey_mean(Grades_Bottom25)
+    #LP = survey_mean(Grades_Bottom25)
   ) %>%
   # arrange(City, Grades, SES_Group) %>%
   select(-contains("_se")) %>%
-  mutate_if(is.numeric, ~ round(., 3)) %>%
+  mutate(HP = HP*100) %>%
   filter(!str_detect(SES_Group, "Middle")) %>%
   pivot_wider(
     names_from = SES_Group,
-    values_from = c(HP, LP)
+    values_from = HP
   ) %>%
   mutate(
-    WPR_LP = `LP_Bottom 40%` / `LP_Top 10%`,
-    WPR_HP = `HP_Bottom 40%` / `HP_Top 10%`
+    #WPR_LP = `LP_Bottom 40%` / `LP_Top 10%`,
+    WPR = round(`Bottom 40%` / `Top 10%`,3)
   ) %>%
   as_tibble() %>%
   select(
-    City, `LP_Bottom 40%`, `LP_Top 10%`, WPR_LP,
-    `HP_Bottom 40%`, `HP_Top 10%`, WPR_HP
+    City, #`LP_Bottom 40%`, `LP_Top 10%`, WPR_LP,
+    `Bottom 40%`, `Top 10%`, WPR
   )

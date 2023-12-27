@@ -1,0 +1,13 @@
+\usepackage{fontspec}
+\setmainfont{Times New Roman}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{titlesec}
+\titleformat{\section}{\fontsize{16}{19}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\fontsize{14}{17}\bfseries}{\thesubsection}{1em}{}
+
+% Custom command to format affiliations as footnotes
+\newcommand{\affiliation}[1]{\footnote{#1}}

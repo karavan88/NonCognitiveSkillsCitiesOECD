@@ -23,7 +23,7 @@ collab_scatter =
         legend.background = element_rect(#fill="gray",
           size=0.5, linetype="solid", 
           colour ="black")) +
-  ylim(0,0.3)+
+  ylim(0,0.5)+
   ylab("Probability of High Performance")+
   xlab("Collaboration")+
   ggtitle("")

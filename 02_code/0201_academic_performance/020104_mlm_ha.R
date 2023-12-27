@@ -14,6 +14,7 @@ mlm_ha_ncs = lmer(Grades_Top25 ~ Sex +  factor(IMMBACK) + SES_Group +
 
 
 ##### compare two models
+ha_model_comparison = anova(mlm_ha_base, mlm_ha_ncs)
 
 # Extract the regression coefficients of SES_Group random slopes by City from each model
 ha_Model1_RE = coef(mlm_ha_base)$City["SES_GroupBottom 40%"] %>% as.data.frame() %>%
@@ -34,14 +35,21 @@ ha_coef_df =
 
 rownames(ha_coef_df) <- NULL
 
+# this code is to assess where the effect of NCS would be the biggest
+# ha_coef_df %>%
+#   spread(Model, `SES_GroupBottom 40%`) %>%
+#   mutate(diff = `Model without NCS` - `Model with NCS` ) %>%
+#   arrange(diff)
+
+
 # Plot the coefficients as a geom_point plot
 ha_mlm_comparison = 
   ggplot(ha_coef_df, aes(x = `SES_GroupBottom 40%`, y = fct_reorder(rowname, desc(rowname) ))) +
-  geom_point(aes(color = Model), size = 7.5) +
+  geom_point(aes(color = Model), size = 4.5) +
   geom_text(aes(label = round(`SES_GroupBottom 40%`,3)*100), size = 3)+
   scale_color_manual(values = c( "lightblue", "#FF9999"))+
-  scale_x_continuous(limits = c(-0.12, 0.03), labels = scales::percent_format())+
-  labs(x = "Effect of Bottom 40% by SES on Probability of\n High Academic Performance", y = "City") +
+  scale_x_continuous(limits = c(-0.27, 0.01), labels = scales::percent_format())+
+  labs(x = "Effect of Bottom 40% by SES on Probability of\n High Academic Achievement", y = "City") +
   theme_bw()+
   theme(legend.position = "bottom",
         legend.background = element_rect(size=0.5, linetype="solid", 

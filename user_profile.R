@@ -20,7 +20,7 @@ if (USERNAME == "kavanesyan"){
 } 
 
 if (USER == "karavan88"){
-  projectFolder  <- getwd()
+  projectFolder  <- "/Users/karavan88/Documents/GitHub/non_cognitive_skills" #getwd()
 } 
 
 

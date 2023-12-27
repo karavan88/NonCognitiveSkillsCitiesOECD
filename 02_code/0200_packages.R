@@ -23,8 +23,10 @@ required_packages <- c("tidyverse",
                        "gtsummary",
                        "gt",
                        "kableExtra",
+                       "broom",
                        "broom.mixed",
                        "ggeffects",
+                       "flextable",
                        "skimr")
 
 

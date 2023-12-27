@@ -1,0 +1,26 @@
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\rfoot{\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\usepackage{titlesec}
+\titleformat{\section}{\fontsize{16}{19}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\fontsize{14}{17}\bfseries}{\thesubsection}{1em}{}
+\setmainfont{Times New Roman}
+
+% Custom command for author affiliations
+\newcommand{\customaffil}[2]{
+  \footnote{#1, #2}
+}
+
+% Custom command for JEL and Keywords
+\newcommand{\jelandkeywords}[2]{
+  \textbf{JEL Classification:} #1 \\
+  \textbf{Keywords:} #2
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[R]{\ifnum\value{page}>1 \thepage\fi}
+\setcounter{page}{2}
